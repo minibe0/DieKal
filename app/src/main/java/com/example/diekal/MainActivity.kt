@@ -4,7 +4,6 @@ package com.example.diekal
 
 import FirestoreManager
 import android.os.Bundle
-import android.speech.RecognitionListener
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -13,17 +12,12 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import com.example.diekal.ui.theme.DieKalTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Done
-import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -35,32 +29,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import android.Manifest
-import android.graphics.Color
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material.icons.rounded.List
-import androidx.compose.material.icons.rounded.RestartAlt
 import androidx.compose.material.icons.rounded.Save
-import androidx.compose.material.icons.rounded.Start
 import androidx.compose.runtime.rememberCoroutineScope
 import com.google.firebase.storage.FirebaseStorage
-import java.util.UUID
 import kotlinx.coroutines.launch
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.rounded.Mic
 import androidx.compose.material.icons.rounded.MicOff
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.IconButton
-import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.runBlocking
@@ -103,7 +91,7 @@ class MainActivity : ComponentActivity() {
             }
             val state by voiceToTextParser.state.collectAsState()
 
-            val firebaseStorage = FirebaseStorage.getInstance() //데이터 불러오기 위해 생성
+
             val scope = rememberCoroutineScope()
 
             Scaffold(floatingActionButton = {
@@ -115,14 +103,7 @@ class MainActivity : ComponentActivity() {
                     voiceToTextParser.startListening(languageCode = "ko-KR")
                     voiceToTextParser.startListening(languageCode = "en-US")
                     state
-//                    else {
-//                        val spokenText = state.spokenText
-//                        if (spokenText.isNotEmpty()) {
-//                            scope.launch {
-//                                firestoreManager.saveSpokenText(spokenText)
-//                            }
-//                        }
-//                    }
+
                     isListVisible = false
 
                 }) {
@@ -137,16 +118,24 @@ class MainActivity : ComponentActivity() {
 
             }) { padding ->
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(padding).padding(20.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding)
+                        .padding(20.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    AnimatedContent(targetState = state.isSpeaking, label = "") {
-                        if (state.isSpeaking) {
-                            Text(text = "말하세요, Say something")
-                        } else {
-                            Text(text = state.spokenText)
-                        }
+                        AnimatedContent(targetState = state.isSpeaking, label = "") {
+                            if (state.isSpeaking) {
+   //                             Text(text = "말하세요, Say something")   //텍스트 안내 시 사용
+                                Image(
+                                    painter = painterResource(id = R.drawable.say_something_2),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(200.dp),
+
+                                    )} else {
+                                Text(text = state.spokenText)
+                            }
                     }
                 }
 
@@ -159,7 +148,9 @@ class MainActivity : ComponentActivity() {
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxSize().padding(15.dp, 0.dp, 15.dp, 0.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(15.dp, 0.dp, 15.dp, 0.dp)
             ) {
                 FloatingActionButton(onClick = {
                     // 업로드 및 저장 버튼 클릭 시 처리
@@ -178,7 +169,6 @@ class MainActivity : ComponentActivity() {
                 }) {
                     Icon(imageVector = Icons.Rounded.Save, contentDescription = "Save")
                 }
-
                 FloatingActionButton(onClick = {
                     // 초기화(취소) 버튼 클릭 시 처리
                     voiceToTextParser.stopListening()
@@ -214,7 +204,9 @@ class MainActivity : ComponentActivity() {
             // 목록 데이터를 화면에 표시하는 부분
             Column(
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxSize().padding(vertical = 60.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = 60.dp)
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -226,7 +218,9 @@ class MainActivity : ComponentActivity() {
                     ) {
                         items(textListState.value) { text ->
                             Card(
-                                modifier = Modifier.padding(15.dp, 5.dp, 15.dp, 0.dp).fillMaxWidth()
+                                modifier = Modifier
+                                    .padding(15.dp, 5.dp, 15.dp, 0.dp)
+                                    .fillMaxWidth()
                                     .height(100.dp)
 
                             ) {
@@ -236,11 +230,10 @@ class MainActivity : ComponentActivity() {
                                     horizontalAlignment = Alignment.Start
                                 ) {
                                     Text(
-                                        text = text,
-                                        style = TextStyle(
-                                            fontSize = 13.sp, color = androidx.compose.ui.graphics.Color.Gray
-                                        ),
-                                        modifier = Modifier.padding(15.dp)
+                                        text = text, style = TextStyle(
+                                            fontSize = 13.sp,
+                                            color = androidx.compose.ui.graphics.Color.Gray
+                                        ), modifier = Modifier.padding(15.dp)
                                     )
                                     val spokenTextDate = runBlocking {
                                         firestoreManager.getSpokenTextDate(text)
@@ -257,8 +250,7 @@ class MainActivity : ComponentActivity() {
                                             text = spokenTextDate.toString(),
                                             fontSize = 10.sp,
                                             lineHeight = 16.sp, // timestamp의 줄 높이 조절
-                                            modifier = Modifier
-                                                .padding(start = 15.dp) // timestamp의 위쪽 패딩 추가
+                                            modifier = Modifier.padding(start = 15.dp) // timestamp의 위쪽 패딩 추가
                                         )
 
                                         IconButton(onClick = {
