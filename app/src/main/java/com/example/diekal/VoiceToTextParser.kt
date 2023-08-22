@@ -9,6 +9,7 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.widget.Toast
+import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.ActivityCompat
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -52,6 +53,9 @@ class VoiceToTextParser(private val app: Application) : RecognitionListener {
         recognizer.stopListening()
     }
 
+    fun clear() {
+        _state.value = _state.value.copy(spokenText = "")
+    }
     override fun onReadyForSpeech(params: Bundle?) {
         _state.update {
             it.copy(
@@ -100,31 +104,17 @@ class VoiceToTextParser(private val app: Application) : RecognitionListener {
     override fun onEvent(eventType: Int, params: Bundle?) = Unit
 
 
-    // .RECORD_AUDIO 권한을 요청하는 함수 생성
-//    fun requestRecordAudioPermission() {
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), REQUEST_RECORD_AUDIO_PERMISSION)
-//        }
-//    }
-//
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//
-//        when (requestCode) {
-//            REQUEST_RECORD_AUDIO_PERMISSION -> {
-//                if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-//                    onRecord()
-//                } else {
-//                    Toast.makeText(this, "녹음 권한이 없습니다.", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
-//    }
 
 }
 
 data class VoiceToTextParserState(
-    val spokenText: String = " ",
+    var spokenText: String = " ",
     val isSpeaking: Boolean = false,
     val error: String? = null
+)
+
+
+data class VoiceToTextState(
+    val isSpeaking: Boolean = false,
+    val spokenText: String = ""
 )

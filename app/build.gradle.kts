@@ -3,7 +3,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id ("com.google.gms.google-services")
+    //firebase 구성
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -65,7 +66,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation(project(mapOf("path" to ":app")))
+    implementation("com.google.firebase:firebase-storage-ktx:20.2.1")
+    implementation("com.google.firebase:firebase-database-ktx:20.2.2")
+//    implementation(project(mapOf("path" to ":app")))
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -75,5 +78,14 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("androidx.compose.material3:material3:1.1.1")
     implementation("androidx.compose.material3:material3-window-size-class:1.1.1")
-    implementation("com.google.gms:google-services:4.3.15")
+   //firebase 구성
+    implementation("com.google.firebase:firebase-firestore-ktx:24.7.0")
+    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("com.google.firebase:firebase-database-ktx")
+
+
 }
+
+
