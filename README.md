@@ -2,4 +2,9 @@ My First Android Project
 
 # DieKal
 
-![image](https://github.com/minibe0/DieKal/assets/61962925/81c0e8fe-5651-4c32-ab4a-ee3a45e21dad)
+Go to Details!
+https://minibe0.notion.site/DieKal-a3f094a2e4114ba1a8011b3e3dcb8330?pvs=4
+---
+
+![image](https://github.com/minibe0/DieKal/assets/61962925/d51a9f28-47f7-4371-ae66-5ffbdc381155)
+
